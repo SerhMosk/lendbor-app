@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <h2>{{ title }}</h2>
+
+    <div class="card text-bg-dark my-2">
+        <div class="card-body">
+            <button type="button" class="btn btn-secondary mr-2" onclick="history.back()">
+                <span class="bi-chevron-left"></span>&nbsp;Back
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                <span class="bi-person-plus"></span>&nbsp;Add user
+            </button>
+            <span class="mx-2">or</span>
+            <a class="icon-link icon-link-hover" href="{{ url_for('user_create') }}">
+               Go to Create User
+               <span class="bi-person-plus"></span>
+            </a>
+        </div>
+    </div>
+
+    {% if keys|length %}
+    <table class="table table-dark">
+        <thead>
+        <tr>
+        {% for key in keys %}
+            <th>{{ key }}</th>
+        {% endfor %}
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+            {% for key in keys %}
+                <td>
+                {% if key == 'id' %}
+                    <a href="{{ url_for('user_detail', user_id=user[key]) }}">{{ user[key] }}</a>
+                {% else %}
+                    {{ user[key] }}
+                {% endif %}
+                </td>
+            {% endfor %}
+                <td>
+                    <a href="{{ url_for('user_detail', user_id=user['id']) }}"
+                        class="btn btn-sm btn-info"><span class="bi-eye"></span></a>
+                    <button type="button"
+                            class="btn btn-sm btn-danger btn-delete"
+                            data-url="{{ url_for('user_delete', user_id=user['id']) }}"
+                            data-redirect_url="users"
+                            data-bs-toggle="modal"
+                            data-bs-target="#confirmDelete">
+                        <span class="bi-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>Nothing to show</p>
+    {% endif %}
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addUserModalLabel">New user</h1>
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal" aria-label="Close">
+                <span class="bi-x-lg"></span>
+            </button>
+          </div>
+          <form id="addUserForm" method="POST" action="{{ url_for('user_create') }}">
+          <div class="modal-body">
+            <div class="form-group mb-2">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" value="{{ username }}"
+                       class="form-control bg-dark text-light" required>
+                <p><small class="text-danger">{{ username_error }}</small></p>
+            </div>
+            <div class="form-group mb-2">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" value="{{ password }}"
+                       class="form-control bg-dark text-light" required>
+                <p><small class="text-danger">{{ password_error }}</small></p>
+            </div>
+            <div class="form-group mb-2">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="first_name" placeholder="Enter first name" value="{{ first_name }}"
+                       class="form-control bg-dark text-light" required>
+                <p><small class="text-danger">{{ first_name_error }}</small></p>
+            </div>
+            <div class="form-group mb-2">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="last_name" placeholder="Enter last name" value="{{ last_name }}"
+                       class="form-control bg-dark text-light" required>
+                <p><small class="text-danger">{{ last_name_error }}</small></p>
+            </div>
+            <div class="form-group mb-2">
+                <label for="phone">Phone</label>
+                <input type="number" min="1" id="phone" name="phone" placeholder="Enter phone" value="{{ phone }}"
+                       class="form-control bg-dark text-light" required>
+                <p><small class="text-danger">{{ age_error }}</small></p>
+            </div>
+            <p><small id="serverError" class="text-danger"></small></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    Delete confirmation
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" id="btnDelete">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

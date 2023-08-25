@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <h2>{{ title }}</h2>
+
+    <div class="card text-bg-dark my-2">
+        <div class="card-body">
+            <button type="button" class="btn btn-secondary mr-2" onclick="history.back()">
+                <span class="bi-chevron-left"></span>&nbsp;Back
+            </button>
+            {% for payment, record in payment %}
+            <button type="button"
+                    class="btn btn-danger btn-delete"
+                    data-url="{{ url_for('payment_delete', payment_id=payment.id) }}"
+                    data-redirect_url="payments"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmDelete">
+                <span class="bi-trash"></span> Delete
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <table class="table table-dark">
+        <thead>
+            <tr><th>key</th><th>value</th></tr>
+        </thead>
+        <tbody>
+        {% for payment, record in payment %}
+            <tr><td>id</td><td>{{ payment.id }}</td></tr>
+            <tr><td>record</td><td><a href="{{ url_for('record_detail', record_id=record.id) }}">{{ record.name }}</a></td></tr>
+            <tr><td>username</td><td><a href="{{ url_for('user_detail', user_id=record.user.id) }}">{{ record.user.username }}</a></td></tr>
+            <tr><td>amount</td><td>{{ record.amount }}</td></tr>
+            <tr><td>remains</td><td>{{ payment.remains }}</td></tr>
+            <tr><td>months</td><td>{{ record.months }}</td></tr>
+            <tr><td>payment amount</td><td>{{ payment.amount }}</td></tr>
+            <tr><td>payment date</td><td>{{ payment.payment_date.strftime('%d.%m.%Y') }}</td></tr>
+            <tr><td>last date</td><td>{{ record.last_date.strftime('%d.%m.%Y') }}</td></tr>
+            <tr><td>created at</td><td>{{ payment.created_at.strftime('%H:%M:%S %d.%m.%Y') }}</td></tr>
+            <tr><td>updated at</td><td>{{ payment.updated_at.strftime('%H:%M:%S %d.%m.%Y') }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    Delete confirmation
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" id="btnDelete">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

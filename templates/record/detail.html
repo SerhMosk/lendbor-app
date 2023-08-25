@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <h2>{{ title }}</h2>
+
+    <div class="card text-bg-dark my-2">
+        <div class="card-body">
+            <button type="button" class="btn btn-secondary mr-2" onclick="history.back()">
+                <span class="bi-chevron-left"></span>&nbsp;Back
+            </button>
+            <button type="button"
+                    class="btn btn-danger btn-delete"
+                    data-url="{{ url_for('record_delete', record_id=record.id) }}"
+                    data-redirect_url="records"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmDelete">
+                <span class="bi-trash"></span> Delete
+            </button>
+        </div>
+    </div>
+
+    <table class="table table-dark">
+        <thead>
+            <tr><th>key</th><th>value</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>id</td><td>{{ record.id }}</td></tr>
+            <tr><td>user</td><td><a href="{{ url_for('user_detail', user_id=user.id) }}">{{ user.username }}</a></td></tr>
+            <tr><td>type</td><td>{{ record.type }}</td></tr>
+            <tr><td>name</td><td>{{ record.name }}</td></tr>
+            <tr><td>amount</td><td>{{ record.amount }}</td></tr>
+            <tr><td>remains</td><td>{{ record.remains }}</td></tr>
+            <tr><td>months</td><td>{{ record.months }}</td></tr>
+            <tr><td>payment_amount</td><td>{{ record.payment_amount }}</td></tr>
+            <tr><td>payment_day</td><td>{{ record.payment_day }}</td></tr>
+            <tr><td>last_date</td><td>{{ record.last_date.strftime('%d.%m.%Y') }}</td></tr>
+            <tr><td>created at</td><td>{{ record.created_at.strftime('%H:%M:%S %d.%m.%Y') }}</td></tr>
+            <tr><td>updated at</td><td>{{ record.updated_at.strftime('%H:%M:%S %d.%m.%Y') }}</td></tr>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    Delete confirmation
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" id="btnDelete">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

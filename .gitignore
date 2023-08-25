@@ -1,0 +1,9 @@
+.idea/
+
+instance/
+venv/
+env/
+
+.env
+*.py[cod]
+*.sqlite3

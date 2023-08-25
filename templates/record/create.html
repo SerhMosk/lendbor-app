@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block name %}
+{{ name }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+        <h2>{{ name }}</h2>
+
+        <form id="addRecordForm" method="POST" action="{{ url_for('record_create') }}">
+            <div class="card text-bg-dark">
+                <div class="card-body">
+                    <div class="form-group mb-2">
+                        <label for="id_user">User</label>
+                        <select class="form-select bg-dark text-light" aria-label="Select user" id="id_user" name="user_id" required>
+                            <option value="" selected disabled>Select user</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                        <p><small class="text-danger">{{ user_id_error }}</small></p>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="id_type">Type</label>
+                        <select class="form-select bg-dark text-light" aria-label="Select type" id="id_type" name="type" required>
+                            <option value="" selected disabled>Select type</option>
+                            {% for type in types %}
+                            <option value="{{ type.value }}">{{ type.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <p><small class="text-danger">{{ type_id_error }}</small></p>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter name" value="{{ record_name }}"
+                               class="form-control bg-dark text-light" required>
+                        <p><small class="text-danger">{{ name_error }}</small></p>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" name="amount" placeholder="Enter amount" value="{{ amount }}"
+                               class="form-control bg-dark text-light" required>
+                        <p><small class="text-danger">{{ amount_error }}</small></p>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="months">Months</label>
+                        <input type="number" id="months" name="months" placeholder="Enter months" value="{{ months }}"
+                               class="form-control bg-dark text-light" required>
+                        <p><small class="text-danger">{{ months_error }}</small></p>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="payment_amount">Payment amount</label>
+                        <input type="number" min="1" id="payment_amount" name="payment_amount" placeholder="Enter payment amount" value="{{ payment_amount }}"
+                               class="form-control bg-dark text-light" required>
+                        <p><small class="text-danger">{{ payment_amount_error }}</small></p>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="payment_day">Payment day</label>
+                        <input type="number" min="1" max="2023" id="payment_day" name="payment_day" placeholder="Enter payment day" value="{{ payment_day }}"
+                               class="form-control bg-dark text-light" required>
+                        <p><small class="text-danger">{{ payment_day_error }}</small></p>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="last_date">Payment last date</label>
+                        <div class="input-group">
+                            <input type="text" id="last_date" name="last_date" placeholder="Enter last date" value="{{ last_date }}"
+                                   class="form-control bg-dark text-light" required>
+                            <label class="input-group-text bg-dark text-light" for="last_date">
+                                <i class="bi-calendar"></i>
+                            </label>
+                        </div>
+                        <p><small class="text-danger">{{ last_date_error }}</small></p>
+                    </div>
+
+                    <p><small id="serverError" class="text-danger"></small></p>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+{% endblock %}
